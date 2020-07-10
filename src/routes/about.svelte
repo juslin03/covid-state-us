@@ -1,7 +1,14 @@
 <svelte:head>
-	<title>About</title>
+  <title>About Covid 19 tracker US</title>
 </svelte:head>
 
-<h1>About this site</h1>
-
-<p>This is the 'about' page. There's not much here.</p>
+<section class="section header">
+  <div class="container">
+    <h1>About</h1>
+    <p>
+      Data provided from
+      <a href="https://covidtracking.com">Covid Tracking</a>
+      . You can learn more there.
+    </p>
+  </div>
+</section>

@@ -1,60 +1,47 @@
 <script>
-	export let segment;
+  export let segment;
+
+  let isOpen = false;
+  function toggleNav() {
+    isOpen = !isOpen;
+  }
 </script>
 
 <style>
-	nav {
-		border-bottom: 1px solid rgba(255,62,0,0.1);
-		font-weight: 300;
-		padding: 0 1em;
-	}
-
-	ul {
-		margin: 0;
-		padding: 0;
-	}
-
-	/* clearfix */
-	ul::after {
-		content: '';
-		display: block;
-		clear: both;
-	}
-
-	li {
-		display: block;
-		float: left;
-	}
-
-	[aria-current] {
-		position: relative;
-		display: inline-block;
-	}
-
-	[aria-current]::after {
-		position: absolute;
-		content: '';
-		width: calc(100% - 1em);
-		height: 2px;
-		background-color: rgb(255,62,0);
-		display: block;
-		bottom: -1px;
-	}
-
-	a {
-		text-decoration: none;
-		padding: 1em 0.5em;
-		display: block;
-	}
+  @media (min-width: 769px) {
+    nav {
+      box-shadow: 1px 0.5px 2px 3px rgba(32, 32, 32, 0.1);
+    }
+  }
 </style>
 
-<nav>
-	<ul>
-		<li><a aria-current="{segment === undefined ? 'page' : undefined}" href=".">home</a></li>
-		<li><a aria-current="{segment === 'about' ? 'page' : undefined}" href="about">about</a></li>
-
-		<!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
-		     the blog data when we hover over the link or tap it on a touchscreen -->
-		<li><a rel=prefetch aria-current="{segment === 'blog' ? 'page' : undefined}" href="blog">blog</a></li>
-	</ul>
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a href="/" class="navbar-item">
+      <img src="logo-192.png" alt="logo-virus" />
+    </a>
+    <span
+      class:is-active={isOpen}
+      on:click={toggleNav}
+      class="navbar-burger"
+      aria-label="menu"
+      aria-expanded="false">
+      <span aria-hidden="true" />
+      <span aria-hidden="true" />
+      <span aria-hidden="true" />
+    </span>
+  </div>
+  <div class="navbar-menu" class:is-active={isOpen}>
+    <div class="navbar-start">
+      <a href="/" class="navbar-item" class:is-active={segment === undefined}>
+        Home
+      </a>
+      <a
+        href="/about"
+        class="navbar-item"
+        class:is-active={segment === 'about'}>
+        About
+      </a>
+    </div>
+  </div>
 </nav>

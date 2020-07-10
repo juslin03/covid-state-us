@@ -1,46 +1,38 @@
-<style>
-	h1, figure, p {
-		text-align: center;
-		margin: 0 auto;
-	}
+<script context="module">
+  import requests from "../data/request.js";
+  export async function preload() {
+    try {
+      const usStats = await requests.usStats();
+      const historic = await requests.historicUs();
+      return { usStats, historic };
+    } catch (error) {
+      this.error(500, error.message);
+      return;
+    }
+  }
+</script>
 
-	h1 {
-		font-size: 2.8em;
-		text-transform: uppercase;
-		font-weight: 700;
-		margin: 0 0 0.5em 0;
-	}
+<script>
+  import TableContainer from "../components/TableContainer.svelte";
+  import CovidChart from "../components/CovidChart.svelte";
+  import CovidStat from "../components/CovidStat.svelte";
 
-	figure {
-		margin: 0 0 1em 0;
-	}
+  export let usStats;
+  export let historic;
 
-	img {
-		width: 100%;
-		max-width: 400px;
-		margin: 0 0 1em 0;
-	}
-
-	p {
-		margin: 1em auto;
-	}
-
-	@media (min-width: 480px) {
-		h1 {
-			font-size: 4em;
-		}
-	}
-</style>
+  console.log(historic, "historic");
+</script>
 
 <svelte:head>
-	<title>Sapper project template</title>
+  <title>Covid19 US Tracker</title>
 </svelte:head>
 
-<h1>Great success!</h1>
+<div class="section header">
+  <div class="container">
+    <h1>Covid19 - US</h1>
+  </div>
+</div>
 
-<figure>
-	<img alt='Success Kid' src='successkid.jpg'>
-	<figcaption>Have fun with Sapper!</figcaption>
-</figure>
-
-<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>
+<CovidStat {...usStats} />
+<CovidChart />
+<TableContainer />

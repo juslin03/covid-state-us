@@ -1,40 +1,35 @@
 <script>
-	export let status;
-	export let error;
-
-	const dev = process.env.NODE_ENV === 'development';
+  export let status;
+  export let error;
 </script>
 
 <style>
-	h1, p {
-		margin: 0 auto;
-	}
-
-	h1 {
-		font-size: 2.8em;
-		font-weight: 700;
-		margin: 0 0 0.5em 0;
-	}
-
-	p {
-		margin: 1em auto;
-	}
-
-	@media (min-width: 480px) {
-		h1 {
-			font-size: 4em;
-		}
-	}
+  .message {
+    margin-top: 2rem;
+  }
 </style>
 
 <svelte:head>
-	<title>{status}</title>
+  <title>Error - {status}</title>
 </svelte:head>
 
-<h1>{status}</h1>
+{#if status !== 404}
+  <div class="container">
+    <article class="message is-danger">
+      <div class="message-header">Page not found</div>
+      <div class="message-body">{error.message}</div>
+    </article>
+  </div>
+{/if}
 
-<p>{error.message}</p>
-
-{#if dev && error.stack}
-	<pre>{error.stack}</pre>
+{#if status === 404}
+  <div class="container">
+    <article class="message is-warning">
+      <div class="message-header">Page not found</div>
+      <div class="message-body">
+        <a href="/" class="link">Clic here</a>
+        to go back.
+      </div>
+    </article>
+  </div>
 {/if}
