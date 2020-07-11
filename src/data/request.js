@@ -2,30 +2,48 @@ import axios from "axios";
 import parsers from "./parsers";
 
 async function usStats() {
-  const req = await axios.get(
+  const response = await axios.get(
     "https://covidtracking.com/api/v1/us/current.json"
   );
-  return parsers.usStats(req.data);
+  return parsers.usStats(response.data);
 }
 
-async function stateStats(state) {
-  const req = await axios.get(
+async function statesData() {
+  const response = await axios.get(
     "https://covidtracking.com/api/v1/states/current.json"
   );
 
-  return parsers.stateStats(state, req.data);
+  return parsers.stateTable(response.data);
+}
+
+async function stateStats(state) {
+  const response = await axios.get(
+    "https://covidtracking.com/api/v1/states/current.json"
+  );
+
+  return parsers.stateStats(state, response.data);
 }
 
 async function historicUs() {
-  const req = await axios.get(
+  const response = await axios.get(
+    "https://covidtracking.com/api/v1/us/daily.json"
+  );
+
+  return parsers.historicUs(response.data);
+}
+
+async function historicState(state) {
+  const response = await axios.get(
     "https://covidtracking.com/api/v1/states/daily.json"
   );
 
-  return parsers.historicUs(req.data);
+  return parsers.historicState(state, response.data);
 }
 
 export default {
   usStats,
   stateStats,
   historicUs,
+  historicState,
+  statesData,
 };

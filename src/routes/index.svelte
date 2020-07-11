@@ -4,7 +4,8 @@
     try {
       const usStats = await requests.usStats();
       const historic = await requests.historicUs();
-      return { usStats, historic };
+      const statesData = await requests.statesData();
+      return { usStats, historic, statesData };
     } catch (error) {
       this.error(500, error.message);
       return;
@@ -19,8 +20,8 @@
 
   export let usStats;
   export let historic;
-
-  console.log(historic, "historic");
+  export let statesData;
+  // console.log(statesData, "statesData");
 </script>
 
 <svelte:head>
@@ -34,5 +35,5 @@
 </div>
 
 <CovidStat {...usStats} />
-<CovidChart />
-<TableContainer />
+<CovidChart historicData={historic} title="US Covid-19" />
+<TableContainer data={statesData} />

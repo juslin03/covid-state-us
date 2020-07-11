@@ -1,7 +1,7 @@
 import format from "./format";
 import moment from "moment";
+import stateNames from "./stateNames";
 
-moment.locale("fr");
 function usStats(data) {
   const [usStatRaw] = data;
   return parseStats(usStatRaw);
@@ -53,7 +53,7 @@ function parseHistoric(historicData) {
       color: "rgb(255, 99, 132)",
     },
   ].reduce((prev, next) => {
-    if (historicData.filter((d) => d[next.key] !== null).length > 4) {
+    if (historicData.filter((d) => d[next.key]).length > 4) {
       prev.push(parseChart(historicData, next.key, next.label, next.color));
     }
     return prev;
@@ -71,12 +71,32 @@ function parseChart(historicData, key, label, color) {
     label,
     data: chartData,
     fill: false,
-    boderColor: color,
+    borderColor: color,
   };
+}
+
+function historicState(state, historicData) {
+  const stateHistoric = historicData.filter((d) => d.state === state);
+  return parseHistoric(stateHistoric);
+}
+
+function stateTable(stateData) {
+  return stateData.map((data) => {
+    const { name } = stateNames.find((d) => d.abbreviation === data.state);
+    return {
+      cases: format.number(data.positive),
+      deaths: format.number(data.death),
+      state: format.number(data.state),
+      tested: format.number(data.totalTestResults),
+      stateFullName: name,
+    };
+  });
 }
 
 export default {
   usStats,
   stateStats,
   historicUs,
+  historicState,
+  stateTable
 };
